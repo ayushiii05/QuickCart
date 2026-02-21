@@ -18,6 +18,7 @@ export const AppContextProvider = (props) => {
     const [userData, setUserData] = useState(false)
     const [isSeller, setIsSeller] = useState(true)
     const [cartItems, setCartItems] = useState({})
+    const [wishlistItems, setWishlistItems] = useState([])
 
     const fetchProductData = async () => {
         setProducts(productsDummyData)
@@ -73,6 +74,20 @@ export const AppContextProvider = (props) => {
         return Math.floor(totalAmount * 100) / 100;
     }
 
+    const toggleWishlist = (itemId) => {
+        setWishlistItems((prev) => {
+            if (prev.includes(itemId)) {
+                return prev.filter((id) => id !== itemId);
+            } else {
+                return [...prev, itemId];
+            }
+        });
+    }
+
+    const isInWishlist = (itemId) => {
+        return wishlistItems.includes(itemId);
+    }
+
     useEffect(() => {
         fetchProductData()
     }, [])
@@ -88,7 +103,8 @@ export const AppContextProvider = (props) => {
         products, fetchProductData,
         cartItems, setCartItems,
         addToCart, updateCartQuantity,
-        getCartCount, getCartAmount
+        getCartCount, getCartAmount,
+        wishlistItems, toggleWishlist, isInWishlist
     }
 
     return (
